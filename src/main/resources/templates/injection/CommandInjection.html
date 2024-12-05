@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Command Executor</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Command Executor</h1>
+
+<form id="command-form">
+    <input type="text" id="command" name="command" required>
+    <button type="submit">Execute</button>
+</form>
+
+<h2>Results</h2>
+
+<pre id="results"></pre>
+
+<script>
+    $(document).ready(function () {
+        $('#command-form').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'post',
+                url: '/execute',
+                data: $('#command').val(),
+                contentType: 'text/plain',
+                dataType: 'json',
+                success: function (data) {
+                    $('#results').text('Output: ' + data.output + '\n\nError: ' + data.error);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
